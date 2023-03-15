@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <body>        
-        <div id="root"></div>
-    </body>
-
-    
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>    
-    <script>
-        const root = document.getElementById("root");
-        const h3 = React.createElement("h3", {
-            onMouseEnter: () => console.log("mouse enter")
-        }, "안녕하세요");
-        const btn = React.createElement("button", {
-            onClick: () => console.log("Clicked!")
-        }, "Click me");
-        const container = React.createElement("div", null, [h3, btn]);
-        ReactDOM.render(container, root)
-    </script>
-
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+    function App() {
+      const [counter, setCounter] = React.useState(0);
+      const onClick = () => {
+        setCounter(counter + 1);
+      };
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button onClick={onClick}>Click me</button>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+  </script>
 </html>
