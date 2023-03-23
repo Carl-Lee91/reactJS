@@ -7,111 +7,32 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function MinutesToHours() {
-      const [amount, setAmount] = React.useState();
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = () => {
-        setAmount(event.target.value);
-      };
-      const reset = () => setAmount(0);
-      const onInvert = () => {
-        reset();
-        setInverted((current) => !current);
-      };
+    function Btn({ text, changeValue }) {
       return (
-        <div>
-          <div>
-            <label htmlFor="minutes">Minutes</label>
-            <input
-              value={inverted ? amount * 60 : amount}
-              id="minutes"
-              placeholder="Minutes"
-              type="number"
-              onChange={onChange}
-              disabled={inverted}
-            />
-          </div>
-          <div>
-            <label htmlFor="hours">Hours</label>
-            <input
-              value={inverted ? amount : Math.round(amount / 60)}
-              id="hours"
-              placeholder="Hours"
-              type="number"
-              disabled={!inverted}
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onInvert}>
-            {inverted ? "Write Hours" : "Write Minutes"}
-          </button>
-        </div>
-      );
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      ); // Btn함수의 text는 원래 pros.text지만 중괄호로 그것의 역할을 대신함
     }
-    function KmToMiles() {
-      const [amount, setAmount] = React.useState();
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = () => {
-        setAmount(event.target.value);
-      };
-      const reset = () => {
-        setAmount(0);
-      };
-      const onInvert = () => {
-        reset();
-        setInverted((current) => !current);
-      };
-
-      return (
-        <div>
-          <div>
-            <label htmlFor="KM">Kilometers</label>
-            <input
-              value={inverted ? Math.round(amount * 1.6 * 100) / 100 : amount}
-              id="kilometers"
-              placeholder="Kilometers"
-              type="number"
-              onChange={onChange}
-              disabled={inverted}
-            />
-          </div>
-          <div>
-            <label htmlFor="Miles">Miles</label>
-            <input
-              value={inverted ? amount : Math.round(amount * 0.6 * 100) / 100}
-              id="miles"
-              placeholder="Miles"
-              type="number"
-              onChange={onChange}
-              disabled={!inverted}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onInvert}>
-            {inverted ? "Write KM" : "Write Miles"}
-          </button>
-        </div>
-      );
-    }
+    const MemorizedBtn = React.memo(Btn); // re-render되는 것만 기억하고 다시 render함
     function App() {
-      const [index, setIndex] = React.useState("0");
-      const onSelect = (event) => {
-        setIndex(event.target.value);
-      };
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <h1>Super Converter</h1>
-          <select value={index} onChange={onSelect}>
-            <option value="0">Select Your Units</option>
-            <option value="1">Minutes & Hours</option>
-            <option value="2">KM & Miles</option>
-          </select>
-          {index === "0" ? <div>Please select your units</div> : null}
-          {index === "1" ? <MinutesToHours /> : null}
-          {index === "2" ? <KmToMiles /> : null}
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn text="Confirm" />
         </div>
-      );
+      ); //changeValue과 text는 prop의 이름일 뿐이지 html기능이나 이벤트리스너가 아니다.
     }
     const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
